@@ -1,2 +1,6 @@
 
-db/SineWaveGenerator.quiproj.21040.rdr.flock
+db/
+incremental_db/
+output_files/
+
+
