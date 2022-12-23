@@ -1,0 +1,17 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity moduladora is
+	port(
+		ctt : in std_logic_vector(7 downto 0);
+		wave : out std_logic_vector(7 downto 0)
+	);
+end moduladora;
+
+architecture ondaTriangular of moduladora is
+	
+	
+
+end ondaTriangular;
