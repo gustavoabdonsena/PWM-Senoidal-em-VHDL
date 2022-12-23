@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity PWM-Senoidal-em-VHDL is
+entity SineWaveGenerator is
 	port (
 		clk, rst: in std_logic;
 		speed: in std_logic_vector(7 downto 0);
@@ -11,9 +11,9 @@ entity PWM-Senoidal-em-VHDL is
 		sin2: out std_logic_vector(7 downto 0);
 		sin3: out std_logic_vector(7 downto 0)
 	);
-end PWM-Senoidal-em-VHDL;
+end SineWavegenerator;
 
-architecture threePWM of PWM-Senoidal-em-VHDL is 
+architecture threePWM of SineWaveGenerator is 
 	component contador is
 		port (
 			clk, rst: in std_logic;
