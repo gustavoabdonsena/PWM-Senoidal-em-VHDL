@@ -23,17 +23,16 @@ architecture threePWM of SineWaveGenerator is
 	
 	component portadora is 
 		port (
-			clk: in std_logic;
-			wave: out std_logic_vector(7 downto 0)
+			ctt : in std_logic_vector(7 downto 0);
+			wave : out std_logic_vector(7 downto 0)
 		);
 		
 	end component portadora;
 	
 	component SineWave is 
 		port (
-			clk: in std_logic;
-			div: in std_logic_vector(7 downto 0);
-			wave: out std_logic_vector(7 downto 0)
+			ctt : in std_logic_vector(7 downto 0);
+			wave : out std_logic_vector(7 downto 0)
 		);
 	end component SineWave;
 	
