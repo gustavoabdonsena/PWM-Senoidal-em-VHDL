@@ -6,10 +6,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity SineWaveGenerator is
 	port (
 		clk, rst: in std_logic;
-		speed: in std_logic_vector(7 downto 0);
-		sin1: out std_logic_vector(7 downto 0);
-		sin2: out std_logic_vector(7 downto 0);
-		sin3: out std_logic_vector(7 downto 0)
+		div_clk: in std_logic_vector(7 downto 0);
+		sin1: out std_logic
 	);
 end SineWavegenerator;
 
@@ -38,22 +36,49 @@ architecture threePWM of SineWaveGenerator is
 	
 	component comparador is
 		port (
-			sign1, sign2: in std_logic_vector(7 downto 0);
-			pwm: out std_logic
+			input_minus, input_plus : in std_logic_vector(7 downto 0);
+			output_signal : out std_logic
 		);
 	end component comparador;
 	
+	component divisor_de_clock is
+		port(
+			i_clk         : in  std_logic;
+			i_rst         : in  std_logic;
+			i_clk_divider : in  std_logic_vector(7 downto 0);
+			o_clk         : out std_logic);
 	
-	signal a,b,c : std_logic_vector(7 downto 0);
+	end component divisor_de_clock;
 	
+	
+	signal a : std_logic;
+	signal b,c,d,e : std_logic_vector(7 downto 0);
 	
 	
 	begin
+	div1: divisor_de_clock
+		port map(
+			i_clk => clk,
+			i_rst => rst,
+			i_clk_divider => div_clk,
+			o_clk => a
+		);
 	
 	cnt1: contador 
-		port map(clk, rst, a);
+		port map(a, rst, b);
+		
+	SineWave1: SineWave
+		port map(b, c);
 		
 	
+	cnt2: contador
+		port map(clk, rst, d);
+		
+	port1: portadora
+		port map(d, e);
+		
+	comp1: comparador
+		port map(e, c, sin1);
 	
 
 end threePWM;
