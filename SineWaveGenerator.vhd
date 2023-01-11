@@ -1,4 +1,4 @@
-library IEEE;
+ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
@@ -6,12 +6,13 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity SineWaveGenerator is
 	port (
 		clk, rst: in std_logic;
-		div_clk: in std_logic_vector(7 downto 0);
+		set_clock: in std_logic_vector(7 downto 0);
 		sin1: out std_logic
 	);
 end SineWavegenerator;
 
 architecture threePWM of SineWaveGenerator is 
+	
 	component contador is
 		port (
 			clk, rst: in std_logic;
@@ -50,36 +51,59 @@ architecture threePWM of SineWaveGenerator is
 	
 	end component divisor_de_clock;
 	
+	component Atraso is
+		port(
+			clk : in std_logic;
+			inverse_enable_out : out std_logic
+		);
+	end component Atraso;
 	
-	signal a : std_logic;
-	signal b,c,d,e : std_logic_vector(7 downto 0);
 	
+	signal divisor_out,atraso_enable : std_logic;
+	signal contador_1, contador_2,contador_3,moduladora_1,moduladora_2,triangular_out : std_logic_vector (7 downto 0);
 	
 	begin
-	div1: divisor_de_clock
-		port map(
-			i_clk => clk,
-			i_rst => rst,
-			i_clk_divider => div_clk,
-			o_clk => a
-		);
+		
+		--Divisor de Clock
+		div_1 : divisor_de_clock 
+			port map(clk,rst,set_clock,divisor_out);
+		
+		-- Atraso
+		at : Atraso
+			port map(clk,atraso_enable);
+		
+		-- contadores
+		
+		ct_1 : contador
+			port map(divisor_out,rst,contador_1);
+		
+		ct_2 : contador
+			port map(divisor_out,atraso_enable,contador_2);
+			
+		ct_3 : contador --contador da triangular
+			port map(clk,rst,contador_3);
+		
+		--triangular
+		tri : portadora
+			port map(contador_3,triangular_out);
+			
+		--senoidal
+
+		senoidal_1 : SineWave
+			port map(contador_1,moduladora_1);
+		
+		senoidal_2 : SineWave
+			port map(contador_2,moduladora_2);
 	
-	cnt1: contador 
-		port map(a, rst, b);
 		
-	SineWave1: SineWave
-		port map(b, c);
+		-- comparadores
+		comp_1 : comparador
+			port map(moduladora_1,triangular_out);
+			
+		comp_2 : comparador
+			port map(moduladora_2,triangular_out);
 		
-	
-	cnt2: contador
-		port map(clk, rst, d);
-		
-	port1: portadora
-		port map(d, e);
-		
-	comp1: comparador
-		port map(e, c, sin1);
-	
+
 
 end threePWM;
 
