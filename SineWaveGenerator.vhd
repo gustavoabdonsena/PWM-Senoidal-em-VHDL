@@ -7,7 +7,7 @@ entity SineWaveGenerator is
 	port (
 		clk, rst: in std_logic;
 		set_clock: in std_logic_vector(7 downto 0);
-		sin1: out std_logic
+		sin,not_sin: out std_logic
 	);
 end SineWavegenerator;
 
@@ -98,10 +98,10 @@ architecture threePWM of SineWaveGenerator is
 		
 		-- comparadores
 		comp_1 : comparador
-			port map(moduladora_1,triangular_out);
+			port map(moduladora_1,triangular_out,sin);
 			
 		comp_2 : comparador
-			port map(moduladora_2,triangular_out);
+			port map(moduladora_2,triangular_out,not_sin);
 		
 
 
