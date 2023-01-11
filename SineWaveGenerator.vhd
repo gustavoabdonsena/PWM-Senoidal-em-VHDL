@@ -58,8 +58,15 @@ architecture threePWM of SineWaveGenerator is
 		);
 	end component Atraso;
 	
+	component inversor is
+		port(
+			input: in std_logic;
+			inverse_output : out std_logic 
+		);
+	end component inversor;
 	
-	signal divisor_out,atraso_enable : std_logic;
+	
+	signal divisor_out,atraso_enable,sin_2 : std_logic;
 	signal contador_1, contador_2,contador_3,moduladora_1,moduladora_2,triangular_out : std_logic_vector (7 downto 0);
 	
 	begin
@@ -101,8 +108,11 @@ architecture threePWM of SineWaveGenerator is
 			port map(moduladora_1,triangular_out,sin);
 			
 		comp_2 : comparador
-			port map(moduladora_2,triangular_out,not_sin);
+			port map(moduladora_2,triangular_out,sin_2);
 		
+		--inversor
+		inver : inversor
+			port map (sin_2,not_sin);
 
 
 end threePWM;
