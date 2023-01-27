@@ -1,2 +1,2 @@
 # PWM-Senoidal-em-VHDL
-Projeto em VHDL para o controle de motores trifásicos através de uma placa FPGA
+Projeto em VHDL usando em um FPGA criando sinais de PWM controle de drivers de um inversor para controle de motores trifásicos robóticos.
